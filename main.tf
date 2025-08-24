@@ -1,12 +1,12 @@
 module "rg" {
-  source   = git::
+  source   = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/resource_group?ref=master"
   name     = "rg-${var.project_name}"
   location = var.location
   tags     = var.tags
 }
 
 module "net" {
-  source         = "github.com/bkrrajmali/terraform-morning-azure-modules.git//modules/network?ref=prod"
+  source         = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/network?ref=master"
   rg_name        = module.rg.name
   location       = module.rg.location
   vnet_name      = "vnet-${var.project_name}"
@@ -18,7 +18,7 @@ module "net" {
 }
 
 module "pip" {
-  source   = "github.com/bkrrajmali/terraform-morning-azure-modules.git//modules/public_ip?ref=prod"
+  source   = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/public_ip?ref=master"
   enabled  = var.create_public_ip
   rg_name  = module.rg.name
   location = module.rg.location
@@ -28,7 +28,7 @@ module "pip" {
 }
 
 module "nic" {
-  source                = "github.com/bkrrajmali/terraform-morning-azure-modules.git//modules/nic?ref=prod"
+  source                = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/nic?ref=master"
   rg_name               = module.rg.name
   location              = module.rg.location
   name                  = "nic-${var.project_name}"
@@ -39,7 +39,7 @@ module "nic" {
 }
 
 module "vm" {
-  source         = "github.com/bkrrajmali/terraform-morning-azure-modules.git//modules/vm_linux?ref=prod"
+  source         = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/vm_linuxp?ref=master"
   rg_name        = module.rg.name
   location       = module.rg.location
   name           = "vm-${var.project_name}"
