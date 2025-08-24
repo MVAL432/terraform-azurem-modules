@@ -1,0 +1,10 @@
+variable "rg_name" {}
+variable "location" {}
+variable "name" {}
+variable "size" {}
+variable "nic_ids" {}
+variable "admin_username" {}
+variable "admin_password" {}
+variable "image" {}
+variable "os_disk" {}
+variable "tags" {}
