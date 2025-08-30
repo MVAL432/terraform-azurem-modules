@@ -1,6 +1,7 @@
-output "network_security_group_id" {
-  description = "The ID of the Network Security Group"
-  value       = azurerm_network_security_group.nsg.id
+output "subnet_id" {
+  description = "The ID of the Subnet"
+  value       = azurerm_subnet.subnet1.id
+  
 }
 
 output "network_security_group_name" {
