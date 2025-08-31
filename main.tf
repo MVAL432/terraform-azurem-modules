@@ -2,7 +2,7 @@ module "rg" {
   source   = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/resource_group?ref=master"
   name     = "rg-${var.project_name}"
   location = var.location
-  tags     = var.tags
+  
 }
 
 module "net" {
@@ -13,8 +13,7 @@ module "net" {
   address_space  = var.address_space
   subnet_name    = "snet-${var.project_name}"
   subnet_prefix  = var.subnet_prefix
-  allow_ssh_cidr = var.allow_ssh_cidr
-  tags           = var.tags
+  depends_on = [ module.rg ]
 }
 
 module "pip" {
@@ -25,6 +24,7 @@ module "pip" {
   name     = "pip-${var.project_name}"
   sku      = "Standard"
   tags     = var.tags
+  depends_on = [ module.rg ]
 }
 
 module "nic" {
@@ -36,10 +36,21 @@ module "nic" {
   public_ip_id          = module.pip.public_ip_id
   private_ip_allocation = "Dynamic"
   tags                  = var.tags
+  depends_on = [ module.rg, module.net, module.pip ]
+}
+
+module "nsg" {
+  source        = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/nsg?ref=master"
+  rg_name       = module.rg.name
+  location      = module.rg.location
+  nsg_name      = "nsg-${var.project_name}"
+  allow_ssh_cidr = var.allow_ssh_cidr
+  tags          = var.tags
+  depends_on = [ module.rg ]
 }
 
 module "vm" {
-  source         = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/vm_linuxp?ref=master"
+  source         = "git::https://github.com/MVAL432/terraform-azurem-modules.git//modules/vm_linux?ref=master"
   rg_name        = module.rg.name
   location       = module.rg.location
   name           = "vm-${var.project_name}"
@@ -59,4 +70,5 @@ module "vm" {
     caching              = "ReadWrite"
   }
   tags = var.tags
+  depends_on = [ module.rg, module.nic ]
 }
