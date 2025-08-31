@@ -5,3 +5,7 @@ output "nic_id" { value = module.nic.nic_id }
 output "vm_private_ip" { value = module.vm.private_ip }
 output "vm_public_ip" { value = module.pip.public_ip }
 output "vm_id" { value = module.vm.id }
+output "nsg_id" { value = module.nsg.network_security_group_id }
+output "nsg_name" { value = module.nsg.network_security_group_name }
+output "location" { value = module.rg.location }
+output "tags" { value = var.tags }
